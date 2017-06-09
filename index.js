@@ -5,15 +5,23 @@ var Q = 0
 
 
 
+
+//admin
 app.get('/', function(req, res) {
 	res.sendfile('root/index.html')
 })
 
-io.on('connection', function(data){
+io.on('connection', function(socket){
 
-	data.send(Q + " Ke Counter / Teller NO " )
-	//console.log("Connection Berhasil")
+	// data.send(Q + " Ke Counter / Teller NO " )
+	console.log("Connection Berhasil")
+	socket.on('msg', function(data) {
+		console.log(data)
+		io.sockets.emit('newmsg', data);
+	})
 })
 
+
+
 //console.log("server jalan");
-server.listen(80)
+server.listen(8081)

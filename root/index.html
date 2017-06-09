@@ -1,9 +1,64 @@
-<script src ="/socket.io/socket.io.js/"></script>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	
+	<div class="display">
+    <div class="wrap" aria-live="polite" aria-atomic="true">
+      <p class="keycode-display"></p>
+    </div>
+  </div>
+  <script src ="/socket.io/socket.io.js"></script>
 <script>
-	var socket = io()
 
-	socket.on('message', function(data) {
-		document.write(data)
+	//socket
+	var io = io();
+
+	//get allbrowser area
+	var body = document.querySelector('body');
+
+	//char allow to use by keypress
+	var keyCodes = {
+		48 : "0",
+		49 : "1",
+		50 : "2",
+		51 : "3",
+		52 : "4",
+		53 : "5",
+	};
+
+	var body = document.querySelector('body');
+
+
+	//get key
+	body.onkeydown = function (e) {
+		if ( !e.metaKey ) {
+			e.preventDefault();
+		}
+		
+		var key  =  keyCodes[e.keyCode] || "";
+		if(key  != ""){
+			io.emit('msg', {
+               number : key
+            });
+		}
+	}
+
+	//set update number to view
+	io.on('newmsg',function(data){
+		document.querySelector('.keycode-display').innerHTML = data.number || "";
 	})
+
+
+
+
+
+
 </script>	
+</body>
+</html>
